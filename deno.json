@@ -1,0 +1,23 @@
+{
+  "tasks": {
+    "dev": "deno run --env-file --watch -A index.ts",
+    "prod": "deno run -A index.ts",
+    "test": "deno test -A",
+    "push": "deno -A --node-modules-dir npm:drizzle-kit push"
+  },
+  "nodeModules": "auto",
+  "imports": {
+    "@felix/argon2": "jsr:@felix/argon2@^2.0.2",
+    "@std/assert": "jsr:@std/assert@^1.0.11",
+    "@std/testing": "jsr:@std/testing@^1.0.9",
+    "@supabase/supabase-js": "jsr:@supabase/supabase-js@^2.48.1",
+    "cors": "npm:cors@^2.8.5",
+    "drizzle-kit": "npm:drizzle-kit@^0.30.4",
+    "drizzle-orm": "npm:drizzle-orm@^0.39.3",
+    "express": "npm:express@^4.21.2",
+    "express-winston": "npm:express-winston@^4.2.0",
+    "pg": "npm:pg@^8.13.3",
+    "supertest": "npm:supertest@^7.0.0",
+    "winston": "npm:winston@^3.17.0"
+  }
+}

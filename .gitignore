@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Environment Variables
+.env
+.env.*
+
+# Compiled Output & Generated Files
+dist/
+build/
+
+# Logs & Cache
+*.log
+.cache/
+npm-debug.log*
+yarn-error.log*
+
+# IDE & Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+
+# OS-Specific Files
+.DS_Store
+Thumbs.db
