@@ -1,0 +1,24 @@
+name: Run Database Migrations
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
+      - name: Run drizzle-kit migrations
+        run: |
+          deno task push
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
