@@ -1,9 +1,10 @@
 {
   "tasks": {
-    "dev": "deno run --env-file --watch -A index.ts",
-    "prod": "deno run -A index.ts",
+    "dev": "deno --env-file --watch -A index.ts",
+    "prod": "deno -A index.ts",
     "test": "deno test -A",
-    "push": "deno -A --node-modules-dir npm:drizzle-kit push"
+    "push": "deno -A --node-modules-dir npm:drizzle-kit push && deno --env-file -A ./db/seed.ts",
+    "push:prod": "deno -A --node-modules-dir npm:drizzle-kit push && deno -A ./db/seed.ts"
   },
   "nodeModules": "auto",
   "imports": {
