@@ -7,7 +7,6 @@ on:
 jobs:
   migrate:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -19,6 +18,8 @@ jobs:
 
       - name: Run drizzle-kit migrations
         run: |
-          deno task push
+          deno task push:prod
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
