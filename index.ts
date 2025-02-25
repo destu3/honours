@@ -1,5 +1,7 @@
 import { app } from './app.ts';
 
-app.listen(3000, () => {
-  console.log('Server is listening on port 3000');
+const port = Deno.env.get('ENV') === 'production' ? 443 : 80;
+
+app.listen(port, () => {
+  console.log(`Server is listening for HTTP/S requests on port ${port}`);
 });
