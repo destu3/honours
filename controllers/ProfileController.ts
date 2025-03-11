@@ -70,7 +70,7 @@ export const getBaseFinancialProfiles = async (_req: Request, res: Response) => 
     logger.info('Base financial profiles fetched successfully');
 
     // Respond with the fetched base financial profiles
-    return res.status(200).json({ financialProfiles });
+    return res.status(200).json(financialProfiles);
   } catch (error: any) {
     logger.error('An unexpected error occurred', { error: error.message });
     return res.status(500).json({ error: 'An unexpected error occurred.' });
