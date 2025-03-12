@@ -20,7 +20,7 @@ async function seedFinancialProfiles() {
     {
       profile_name: 'Budget-Conscious Undergrad',
       description: 'A student with minimal income relying on scholarships and family support. Focuses on strict budgeting.',
-      starting_income: 500.0,
+      starting_income: 1200.0,
       starting_expenses: 200.0,
       starting_debt: 0.0,
       goals: 'Learn budgeting, reduce unnecessary expenses, and build credit over time.',
@@ -29,7 +29,7 @@ async function seedFinancialProfiles() {
       profile_name: 'Part-Time Working Undergrad',
       description:
         'A student juggling part-time work and studies, with a moderate income. Balances work and academic commitments.',
-      starting_income: 1000.0,
+      starting_income: 2000.0,
       starting_expenses: 400.0,
       starting_debt: 100.0,
       goals: 'Manage work-study balance, build savings, and develop a healthy financial profile.',
@@ -37,7 +37,7 @@ async function seedFinancialProfiles() {
     {
       profile_name: 'Scholarship/Grant-Funded Undergrad',
       description: 'A student primarily funded through scholarships or grants, with a stable but limited income source.',
-      starting_income: 1200.0,
+      starting_income: 2800.0,
       starting_expenses: 500.0,
       starting_debt: 0.0,
       goals: 'Maximize scholarship funds, minimize debt, and plan for future expenses.',
@@ -46,7 +46,7 @@ async function seedFinancialProfiles() {
       profile_name: 'Financially Independent Undergrad',
       description:
         'A student who self-funds through full-time work or entrepreneurship, balancing higher expenses with greater income.',
-      starting_income: 1500.0,
+      starting_income: 2500.0,
       starting_expenses: 700.0,
       starting_debt: 200.0,
       goals: 'Achieve financial independence, manage higher cash flow, and build credit responsibly.',
