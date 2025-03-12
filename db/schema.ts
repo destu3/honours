@@ -25,8 +25,8 @@ export const userFinancialProfiles = pgTable('user_financial_profiles', {
 });
 
 // Account Types Enumeration
-export const accountTypes = ['checking', 'savings'] as const;
-export type AccountType = (typeof accountTypes)[number];
+const accountTypes = ['checking', 'savings'] as const;
+type AccountType = (typeof accountTypes)[number];
 
 // Accounts Table
 export const accounts = pgTable('accounts', {
@@ -38,4 +38,19 @@ export const accounts = pgTable('accounts', {
   balance: numeric('balance', { precision: 12, scale: 2 }).default('0.00').notNull(),
   createdAt: timestamp('created_at', { mode: 'string' }).defaultNow().notNull(),
   updatedAt: timestamp('updated_at', { mode: 'string' }).defaultNow().notNull(),
+});
+
+const transactionCategories = ['needs', 'wants', 'savings'] as const;
+type TransactionCategory = (typeof transactionCategories)[number];
+
+// transactions Table
+export const transactions = pgTable('transactions', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  accountId: uuid('account_id')
+    .references(() => accounts.id)
+    .notNull(),
+  category: varchar('category', { length: 20 }).$type<TransactionCategory>().notNull(),
+  amount: numeric('amount', { precision: 12, scale: 2 }).notNull(),
+  description: varchar('description', { length: 255 }),
+  createdAt: timestamp('created_at', { mode: 'string' }).defaultNow().notNull(),
 });

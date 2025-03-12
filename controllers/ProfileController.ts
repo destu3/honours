@@ -1,16 +1,17 @@
 import { Request, Response } from 'express';
 import supabase from '../db/client.ts';
 import { logger } from '../logger.config.ts';
+import { handleError } from '../utils/handleError.ts';
 
+// Create a user financial profile from a selected base profile
 export const createUserFinancialProfile = async (req: Request, res: Response) => {
   const { selectedProfileId, userId } = req.body;
 
   if (!selectedProfileId || !userId) {
-    logger.error('Missing required fields', { selectedProfileId, userId });
-    return res.status(400).json({ error: 'Missing required fields.' });
+    return handleError(res, 'Missing required fields.', { selectedProfileId, userId }, 400);
   }
 
-  logger.info('Attempting to assign financial profile', { userId, selectedProfileId });
+  logger.info('Assigning financial profile', { userId, selectedProfileId });
 
   try {
     // Fetch the selected financial profile template
@@ -21,8 +22,7 @@ export const createUserFinancialProfile = async (req: Request, res: Response) =>
       .single();
 
     if (profileError || !financialProfile) {
-      logger.error('Failed to fetch financial profile', { error: profileError?.message });
-      return res.status(400).json({ error: 'Invalid financial profile selected.' });
+      return handleError(res, 'Invalid financial profile selected.', profileError, 400);
     }
 
     // Create a new user financial profile
@@ -38,41 +38,34 @@ export const createUserFinancialProfile = async (req: Request, res: Response) =>
       .single();
 
     if (userProfileError || !userProfile) {
-      logger.error('Failed to create user financial profile', { error: userProfileError?.message });
-      return res.status(500).json({ error: 'Failed to create user financial profile.' });
+      return handleError(res, 'Failed to create user financial profile.', userProfileError);
     }
 
-    logger.info('User financial profile created successfully', { userFinancialProfileId: userProfile.id });
+    logger.info('User financial profile created', { userFinancialProfileId: userProfile.id });
 
-    // Respond with the created user financial profile
     return res.status(201).json({
       message: 'User financial profile created successfully.',
       userFinancialProfile: userProfile,
     });
   } catch (error: any) {
-    logger.error('An unexpected error occurred', { error: error.message });
-    return res.status(500).json({ error: 'An unexpected error occurred.' });
+    return handleError(res, 'Unexpected error creating user financial profile.', error);
   }
 };
 
+// Fetch all base financial profiles
 export const getBaseFinancialProfiles = async (_req: Request, res: Response) => {
-  logger.info('Attempting to fetch base financial profiles');
+  logger.info('Fetching base financial profiles');
 
   try {
-    // Fetch all base financial profiles
     const { data: financialProfiles, error: profileError } = await supabase.from('financial_profiles').select('*');
 
     if (profileError || !financialProfiles) {
-      logger.error('Failed to fetch base financial profiles', { error: profileError?.message });
-      return res.status(500).json({ error: 'Failed to fetch financial profiles.' });
+      return handleError(res, 'Failed to fetch financial profiles.', profileError);
     }
 
     logger.info('Base financial profiles fetched successfully');
-
-    // Respond with the fetched base financial profiles
     return res.status(200).json(financialProfiles);
   } catch (error: any) {
-    logger.error('An unexpected error occurred', { error: error.message });
-    return res.status(500).json({ error: 'An unexpected error occurred.' });
+    return handleError(res, 'Unexpected error fetching financial profiles.', error);
   }
 };
