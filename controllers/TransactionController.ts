@@ -1,34 +1,7 @@
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response } from 'npm:@types/express';
 import supabase from '../db/client.ts';
 import { logger } from '../logger.config.ts';
-import { generateFakeTransactions } from '../utils/generateTransactions.ts';
 import { handleError } from '../utils/handleError.ts';
-
-// Middleware: Generate transactions and pass data to the next handler
-export const generateTransactions = async (req: Request, res: Response, next: NextFunction) => {
-  const { accountId } = req.body;
-  logger.info('Generating transactions', { accountId });
-
-  try {
-    const newTransactions = generateFakeTransactions(accountId);
-    const { error } = await supabase.from('transactions').insert(newTransactions);
-
-    if (error) {
-      return handleError(res, 'Failed to generate transactions.', error);
-    }
-
-    logger.info('Transactions generated successfully', { count: newTransactions.length });
-
-    // Compute total amount
-    const totalAmount = newTransactions.reduce((acc, curr) => acc + Number(curr.amount) || 0, 0);
-
-    // Pass generated data to the next middleware
-    req.body = { ...req.body, newTransactions, totalAmount };
-    next();
-  } catch (error: any) {
-    return handleError(res, 'Unexpected error generating transactions.', error);
-  }
-};
 
 // Fetch all transactions for an account
 export const getTransactions = async (req: Request, res: Response) => {

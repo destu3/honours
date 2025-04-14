@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Request, Response } from 'npm:@types/express';
 import supabase from '../db/client.ts';
 import { logger } from '../logger.config.ts';
 import { handleError } from '../utils/handleError.ts';
@@ -67,8 +67,8 @@ export const getAccountIdFromUserId = async (req: Request, res: Response) => {
 };
 
 // Update account balance after transactions
-export const updateAccountBalance = async (req: Request, res: Response) => {
-  const { accountId, totalAmount, newTransactions } = req.body;
+export const updateAccountBalance = async (_req: Request, res: Response) => {
+  const { accountId, totalAmount, newTransactions, notifications } = res.locals;
   logger.info('Updating account balance', { accountId });
 
   try {
@@ -82,7 +82,7 @@ export const updateAccountBalance = async (req: Request, res: Response) => {
       return handleError(res, 'Failed to fetch account balance.', fetchError);
     }
 
-    const updatedBalance = accountData.balance - totalAmount;
+    const updatedBalance = Number(accountData.balance) - totalAmount;
 
     const { error: updateError } = await supabase.from('accounts').update({ balance: updatedBalance }).eq('id', accountId);
 
@@ -91,9 +91,13 @@ export const updateAccountBalance = async (req: Request, res: Response) => {
     }
 
     logger.info('Account balance updated', { accountId, deductedAmount: totalAmount, updatedBalance });
-    return res
-      .status(200)
-      .json({ message: 'Transactions processed successfully.', newTransactions, deductedAmount: totalAmount });
+
+    return res.status(200).json({
+      message: 'Transactions processed successfully.',
+      newTransactions,
+      deductedAmount: totalAmount,
+      notifications,
+    });
   } catch (error: any) {
     return handleError(res, 'Unexpected error updating account balance.', error);
   }

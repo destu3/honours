@@ -1,4 +1,11 @@
 const categories = ['needs', 'wants', 'savings'];
+export interface Transaction {
+  account_id: string;
+  amount: string;
+  category: string;
+  description: string;
+  created_at: string;
+}
 
 const categoryDescriptions: Record<string, string[]> = {
   needs: ['Grocery shopping', 'Utility bill payment', 'Public transport fare', 'Medical expenses', 'Rent payment', 'Car fuel'],
@@ -22,7 +29,7 @@ const categoryDescriptions: Record<string, string[]> = {
 };
 
 export function generateFakeTransactions(accountId: string) {
-  const transactions = [];
+  const transactions: Transaction[] = [];
 
   for (let i = 0; i < 3; i++) {
     const category = categories[Math.floor(Math.random() * categories.length)];
